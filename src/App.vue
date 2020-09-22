@@ -6,8 +6,9 @@
         <h1 class="turn">Turn:</h1>
         <h1 class="symbol-view">{{ turn ? "X" : "O" }}</h1>
       </div>
-      <div v-if="winner.win" class="turn-container">
-        <h1 class="turn">{{ winner.player }} ha vinto!</h1>
+      <div v-if="winner.win" class="turn-container win-container">
+        <h1 class="turn">{{ winner.player }} won!</h1>
+        <button @click="restartGame">Restart</button>
       </div>
       <div class="game-container">
         <div v-for="(cell, i) in cells" :key="i">
@@ -25,35 +26,45 @@
 
 <script>
 import Cell from "./components/Cell.vue";
-
-export default {
-  name: "App",
-  components: {
-    Cell
-  },
-  data: () => ({
+function init() {
+  return {
     cells: Array.from({ length: 9 }),
     winningCells: [],
     turn: true,
     winner: {
       win: false,
-      player: "",
-      playerBool: false
-    }
-  }),
+      player: ""
+    },
+    moves: 0
+  };
+}
+export default {
+  name: "App",
+  components: {
+    Cell
+  },
+  data: () => init(),
   methods: {
+    restartGame() {
+      location.reload();
+    },
     changeTurn(index) {
       /*
         turn:
           true  -> X
           false -> O
       */
+      this.moves++;
+      console.log(this.moves);
       this.cells[index] = this.turn;
       const winner = this.checkForWinner();
       if (winner !== -1) {
-        console.log(winner + " ha won!");
         this.winner.win = true;
         this.winner.player = winner ? "X" : "O";
+      }
+      if (this.moves === 9 && winner === -1) {
+        this.winner.player = "None";
+        this.winner.win = true;
       }
       this.turn = !this.turn;
     },
@@ -171,6 +182,10 @@ body {
   padding: 1rem;
   margin: 0;
   box-shadow: 0px 13px 28px -10px rgba(0, 0, 0, 0.416);
+}
+
+.win-container {
+  display: grid;
 }
 
 .turn-container {
