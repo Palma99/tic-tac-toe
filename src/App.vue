@@ -2,11 +2,19 @@
   <div>
     <h1 class="title">Tic Tac Toe</h1>
     <div class="app">
-      <div v-if="!winner.win" class="turn-container">
+      <div
+        v-if="!winner.win"
+        :class="{ cross: turn, circle: !turn }"
+        class="turn-container"
+      >
         <h1 class="turn">Turn:</h1>
         <h1 class="symbol-view">{{ turn ? "X" : "O" }}</h1>
       </div>
-      <div v-if="winner.win" class="turn-container win-container">
+      <div
+        v-if="winner.win"
+        :class="{ cross: winner.player === 'X', circle: winner.player === 'O' }"
+        class="turn-container win-container"
+      >
         <h1 class="turn">{{ winner.player }} won!</h1>
         <button @click="restartGame" class="restart-button">Restart</button>
       </div>
@@ -62,10 +70,12 @@ export default {
           true  -> X
           false -> O
       */
+
       this.moves++;
-      //console.log(this.moves);
       this.cells[index] = this.turn;
+
       const winner = this.checkForWinner();
+
       // If there is a winner
       if (winner !== -1) {
         this.winner.win = true;
