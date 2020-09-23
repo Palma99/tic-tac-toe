@@ -45,9 +45,17 @@ export default {
   },
   data: () => init(),
   methods: {
+    /**
+     * Restart the game. Reload page
+     */
     restartGame() {
       location.reload();
     },
+
+    /**
+     * When click on a cell, change turn. Also check if game is finished
+     * @param {number} index index of clicked cell
+     */
     changeTurn(index) {
       /*
         turn:
@@ -55,26 +63,30 @@ export default {
           false -> O
       */
       this.moves++;
-      console.log(this.moves);
+      //console.log(this.moves);
       this.cells[index] = this.turn;
       const winner = this.checkForWinner();
+      // If there is a winner
       if (winner !== -1) {
         this.winner.win = true;
         this.winner.player = winner ? "X" : "O";
       }
+
+      // If board is full and no winner
       if (this.moves === 9 && winner === -1) {
         this.winner.player = "None";
         this.winner.win = true;
       }
       this.turn = !this.turn;
     },
+
     /**
      * Check if al element of a given set are equal.
      * Just checking if size is 1. Also check if the set contains
      * an undefined element.
      * @param {Set} elm
-     * @returns {(number|string)} returns -1 if none won; in case of win
-     *                            returns a string containing the winner
+     * @returns {(number|boolean)} returns -1 if none won; in case of win
+     *                            returns a true if x won, and false if o won
      */
     allEqual(elm) {
       if (elm.size === 1 && !elm.has(undefined)) {
@@ -82,6 +94,12 @@ export default {
       }
       return -1;
     },
+
+    /**
+     * Check every row, column and diagonal.
+     * @returns {(number|boolean)} returns -1 if there is no winner, otherwise return a boolean:
+     *                             true if X won, false if O won.
+     */
     checkForWinner() {
       // Rows
       for (let i = 0; i < 9; i += 3) {
