@@ -40,7 +40,7 @@ export default {
   height: 15vw;
   text-align: center;
   font-size: 8vw;
-  background: rgb(255, 255, 255);
+  background: #d1d1d1;
 }
 
 .cell:hover {

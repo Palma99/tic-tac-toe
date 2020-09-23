@@ -8,7 +8,7 @@
       </div>
       <div v-if="winner.win" class="turn-container win-container">
         <h1 class="turn">{{ winner.player }} won!</h1>
-        <button @click="restartGame">Restart</button>
+        <button @click="restartGame" class="restart-button">Restart</button>
       </div>
       <div class="game-container">
         <div v-for="(cell, i) in cells" :key="i">
@@ -185,7 +185,20 @@ body {
 }
 
 .win-container {
-  display: grid;
+  display: grid !important;
+}
+
+.restart-button {
+  border-radius: 10px;
+  font-size: 2em;
+  width: auto;
+  border: 1px solid #ffca3a;
+  background: #ffca3ad6;
+}
+
+.restart-button:hover {
+  cursor: pointer;
+  background: #ffca3a;
 }
 
 .turn-container {
