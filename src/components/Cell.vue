@@ -1,6 +1,5 @@
 <template>
   <div class="cell" @click="changeState">
-    <!-- <span>{{ symbols[state] }}</span> -->
     <img class="shadow" :src="symbols[state]" />
   </div>
 </template>
@@ -16,14 +15,17 @@ export default {
     state: 0,
     enable: true
   }),
-  computed: {},
   props: {
     index: Number,
-    turn: Boolean
+    turn: Boolean,
+    winner: Boolean
   },
   methods: {
     changeState() {
-      if (this.enable) {
+      // If there is a winner, then you cant click anymore on the cell
+      if (this.winner === true) {
+        return;
+      } else if (this.enable) {
         this.enable = false;
         this.state = this.turn ? 1 : 2;
         this.$emit("nextTurn", this.index);
@@ -40,7 +42,7 @@ export default {
   height: 15vw;
   text-align: center;
   font-size: 8vw;
-  background: #d1d1d1;
+  background: #dedede;
 }
 
 .cell:hover {

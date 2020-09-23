@@ -7,7 +7,7 @@
         :class="{ cross: turn, circle: !turn }"
         class="turn-container"
       >
-        <h1 class="turn">Turn:</h1>
+        <h1 class="turn">Player:</h1>
         <h1 class="symbol-view">{{ turn ? "X" : "O" }}</h1>
       </div>
       <div
@@ -24,6 +24,7 @@
             :class="{ 'winning-cell': winningCells.includes(i) }"
             @nextTurn="changeTurn($event)"
             :turn="turn"
+            :winner="winner.win"
             :index="i"
           />
         </div>
@@ -54,23 +55,21 @@ export default {
   data: () => init(),
   methods: {
     /**
-     * Restart the game. Reload page
+     * Restart the game
      */
     restartGame() {
       location.reload();
     },
 
     /**
-     * When click on a cell, change turn. Also check if game is finished
+     * When click on a cell, change turn. Also check if game is finished.
+     * turn:
+     *   true  -> X
+     *   false -> O
+     *
      * @param {number} index index of clicked cell
      */
     changeTurn(index) {
-      /*
-        turn:
-          true  -> X
-          false -> O
-      */
-
       this.moves++;
       this.cells[index] = this.turn;
 
